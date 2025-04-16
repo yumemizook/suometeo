@@ -23,7 +23,8 @@
   <body>
     <!-- I should have gone with vanilla CSS instead this is melting my brain -->
     <div
-      class="w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left w3-opacity w3-dark-grey"
+      class="w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left w3-black"
+      style="opacity: 0.8;"
       style="width: 200px; left: 0"
       id="mySidebar"
     >
@@ -44,8 +45,11 @@
           get-location
           placeholder="Enter a location"
         />
-        <button id="searchBtn" get-location-button>
+        <button  id="searchBtn"get-location-button>
           <i class="fa fa-search"></i>
+        </button>
+        <button class="get-location-auto">
+          <i class="fa fa-crosshairs"></i>
         </button>
       </div>
       <a href="#" class="w3-bar-item w3-button">Current weather</a>
@@ -53,11 +57,23 @@
       <a href="#" class="w3-bar-item w3-button">8-day forecast</a>
       <a href="#" class="w3-bar-item w3-button">History aggregation</a>
       <!-- I can't spell grrrrr  -->
-      <a
+      <button
+        href="#"
+        class="w3-bar-item w3-button"
+        style="position: absolute; bottom: 80; width: 100%"
+        save-location>Save location</button
+      >
+      <button
+        href="#"
+        class="w3-bar-item w3-button"
+        style="position: absolute; bottom: 30; width: 100%"
+        get-saved-location>Return to saved location</button
+      >
+      <button
         href="#"
         class="w3-bar-item w3-button"
         style="position: absolute; bottom: 0; width: 100%"
-        >Return to saved location</a
+        clear-location>Delete saved location</button
       >
     </div>
     <div class="w3-main" style="margin-right: 200px">
@@ -68,12 +84,20 @@
         >
           &#9776;
         </button>
+
+        <button class="w3-button w3-xlarge w3-right w3-hide-large refresh" style="height:52px" save-location><i class="fa fa-refresh"></i></button>
+      </div>
+    </div>
+    <div class="datetime">
+      <div class="date">
+        <h3 id="date">-?-</h3>
+        <h4 id="time">-?-</h4>
       </div>
     </div>
 
     <div class="electro-charged">
       <!--Weather info will be stored here -->
-      <div class="crystalize">Loading...</div>
+      <div class="crystalize hide">Loading...</div>
       <div class="weathercontainer">
         <div class="weatherinfo">
           <h4 id="dt"></h4>
@@ -97,16 +121,15 @@
           <div class="extrastuff"><p class="dewpoint">Dew point: -?-</p></div>
           <div class="extrastuff"><p class="sunrise">Sunrise: -?-</p></div>
           <div class="extrastuff"><p class="sunset">Sunset: -?-</p></div>
-          <div class="quicken">
-            <button save-location>Save location</button>
-            <button get-saved-location>Get saved location</button>
-            <button clear-location>Clear save</button>
-          </div>
         </div>
         <div class="tartaglia">
           <h3>Rainfall prediction</h3>
           <div class="realtime"></div>
         </div>
+        
+        <div class="hourlyforecast"></div>
+
+        <div class="weatherforecast"></div>
       </div>
     </div>
     <script>
@@ -118,5 +141,6 @@
         document.getElementById("mySidebar").style.display = "none";
       }
     </script>
+    <script src="./current.js"></script>
   </body>
 </html>
