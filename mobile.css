@@ -80,7 +80,15 @@ body{
     width: 29px;
     height: 29px; /* i think i should get a ruler and measure if the search bar and the button are leveled */
   }
+.realtime{
+  display:grid;
+  grid-template-columns: repeat(60, 1fr);
+  gap: 1px;
+}
 
+.minutedetails{
+  margin: 1px;
+}
   .hide{
     display: none;
   }

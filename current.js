@@ -418,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const color = `rgba(65,245,114,${transparency})`; // Set color based on precipitation
           document.querySelector(".realtime").innerHTML += `
             <div class="minute-details" style="background-color: ${color};">
-              <h1>${time}</h1> <p>${precipitation}mm</p>
+ 
             </div>
           `;
         });
