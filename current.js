@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".weatherforecast").innerHTML = ""; // Clear previous forecast data
     document.querySelector(".crystalize").classList.remove("hide");
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+        `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,alerts&appid=${apiKey}&units=metric`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -173,33 +173,23 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.cod !== 200) {
           document.querySelector(".electro-charged").classList.remove("hide");
         }
-        const time = new Date(data.dt * 1000).toLocaleTimeString("en-GB", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        });
-        const day = new Date(data.dt * 1000).getDate();
-        const month = new Date(data.dt * 1000).toLocaleString("default", {
-          month: "long",
-        });
-        const weather = data.weather[0].description;
-        const weatherIcon = data.weather[0].icon; // Weather icon code, will convert to actual icons
+        const weather = data.current.weather[0].description;
+        const weatherIcon = data.current.weather[0].icon; // Weather icon code, will convert to actual icons
         document.querySelector(
           ".icon"
         ).src = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
         //either openweatherAPI is drunk or there is something wrong on my end, no way the temperatures are all the same
  // City name and country code
-        const temp = Math.round(data.main.temp);
-        // const tempmax = Math.round(data.main.temp_max); //until the current weather can return something else rather than 3 same values
-        // const tempmin = Math.round(data.main.temp_min);
-        const realfeel = Math.round(data.main.feels_like);
+        const temp = Math.round(data.current.temp);
+        const tempmax = Math.round(data.daily[0].temp.max); //until the current weather can return something else rather than 3 same values
+        const tempmin = Math.round(data.daily[0].temp.min);
+        const realfeel = Math.round(data.current.feels_like);
         document.querySelector(".electro-charged").classList.remove("hide");
-        document.querySelector("#dt").textContent = month + " "+ day + " @ "+ time;
 
         document.querySelector("#condition").textContent = weather;
         document.querySelector("#temperature").textContent = `${temp}°C`; //because fuck imperial
-        // document.querySelector("#tempmaxmin").textContent =
-        //   `${tempmax}°C` + " / " + `${tempmin};
+ document.querySelector("#tempmaxmin").textContent =
+ `${tempmax}°C` + " / " + `${tempmin}°C`;
         document.querySelector("#feelslike").textContent =
           "RealFeel: " + `${realfeel}°C`;
         document.querySelector(".crystalize").classList.add("hide");
