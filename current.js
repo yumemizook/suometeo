@@ -1,4 +1,5 @@
-const apiKey = "c4f58d4cdd136760eb52085ad054767f"; //just because i already have one
+//const apiKey = "c4f58d4cdd136760eb52085ad054767f"; //just because i already have one //temporary backup key
+const apiKey = "c03e728ec54244994b0935a453bcb87c"; // backup key
 const locationFetch = document.querySelector(".get-location-auto");
 const searchQuery = new URLSearchParams(location.search);
 const query = searchQuery.get("q")?.trim();
@@ -15,11 +16,16 @@ let tempmax, tempmin; // Declare global variables for max and min temperature
 
 let statecode = ""; // Declare statecode variable
 let countrycode = ""; // Declare countrycode variable
-
+let weatherIcon = ""
 document.addEventListener("DOMContentLoaded", () => {
-    // loadData()
+     loadData();
     dateTime();
   });
+  window.onload = () => {
+    getIcon(weatherIcon); // Replace with dynamic logic to fetch the actual weather icon
+  };
+
+
   // Call loadData on page load to check for saved data
   locationInput.addEventListener("input", (e) => {
     const cityname = e.target.value;
@@ -35,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       getRealTimeWeather(lat, lon);
       getExtra(lat, lon);
       getHourlyWeather(lat, lon);
+      getIcon(weatherIcon);
       locationInput.value = ""; // Clear the input field after fetching
     });
   });
@@ -51,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     getRealTimeWeather(lat, lon);
     getExtra(lat, lon);
     getHourlyWeather(lat, lon);
+    getIcon(weatherIcon);
   });
   
   reloadButton.addEventListener("click", () => {
@@ -68,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
       getRealTimeWeather(lat, lon);
       getExtra(lat, lon);
       getHourlyWeather(lat, lon);
+      getIcon(weatherIcon);
     } else {
       document.querySelector("[get-saved-location]").classList.add("hide");
       document.querySelector(".crystalize").classList.add("hide");
@@ -87,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getRealTimeWeather(lat, lon);
         getExtra(lat, lon);
         getHourlyWeather(lat, lon);
+        getIcon(weatherIcon);
       },
       (error) => {
         console.error("Error getting location:", error.message);
@@ -174,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
           document.querySelector(".electro-charged").classList.remove("hide");
         }
         const weather = data.current.weather[0].description;
-        const weatherIcon = data.current.weather[0].icon; // Weather icon code, will convert to actual icons
+         weatherIcon = data.current.weather[0].icon; // Weather icon code, will convert to actual icons
         document.querySelector(
           ".icon"
         ).src = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
@@ -265,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.cod !== 200) {
           document.querySelector(".electro-charged").classList.remove("hide");
         }
-        data.daily.slice(0, 7).forEach((daily) => {
+        data.daily.slice(0, 3).forEach((daily) => {
           const weather = daily.weather[0].description;
           const weatherIcon = daily.weather[0].icon;
           const dateOfWeek = new Date(daily.dt * 1000).toLocaleDateString(
@@ -293,10 +303,10 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2>${dateOfWeek}</h2>
         <p>${month} ${day}<p>
         <img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" alt="${weather}">
-        <h3>${weather}</h3>
+        <h5>${weather}</h5>
         <h4>${tempmax}°C</h4>
         <h4>${tempmin}°C</h4>
-        <h4>${rainchance}% precip ${rain}</h4>
+        <h4><i class='fa fa-umbrella'></i> ${rainchance}% ${rain}</h4>
       </div>
     `;
         });
@@ -331,21 +341,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.cod !== 200) {
           document.querySelector(".electro-charged").classList.remove("hide");
         }
-        data.hourly.slice(0, 25).forEach((hourly) => {
-          // Debating whether we should keep it 24 or 12
+        data.hourly.slice(0, 8).forEach((hourly) => {
+          // 48 hours can be fetched in another page
           const weather = hourly.weather[0].description;
           const weatherIcon = hourly.weather[0].icon;
-          const time = new Date(hourly.dt * 1000).toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-          });
-          const day = new Date(hourly.dt * 1000).getDate();
-          const month = new Date(hourly.dt * 1000).toLocaleString("default", {
-            month: "short",
-          });
+          const hour = new Date(hourly.dt * 1000).getHours();
+ 
+          const dayofweek = new Date(hourly.dt * 1000).toLocaleDateString(
+            "en-US",
+            {
+              weekday: "long",
+            }
+          );
+
           const foretemp = Math.round(hourly.temp);
-          const forehumidity = Math.round(hourly.humidity);
+          // const forehumidity = Math.round(hourly.humidity);
           const forechance = Math.round(hourly.pop * 100);
           let forerain = "";
           if (forechance > 0 && hourly.rain) {
@@ -356,8 +366,8 @@ document.addEventListener("DOMContentLoaded", () => {
           document.querySelector(".hourlyforecast").innerHTML += `
       <div class="details">
       <div class="sector1">
-        <h2>${time}</h2>
-        <p>${day} ${month}<p>
+        <h2>${hour}</h2>
+        <p>${dayofweek} </p>
         </div>
         <div class="sector2">
         <img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" alt="${weather}">
@@ -365,8 +375,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <h3>${foretemp}°C</h3>
         </div>
         <div class="sector3">
-        <h4>${forehumidity}% humid</h4>
-        <h4>${forechance}% precip ${forerain}</h4>
+        <h4><i class='fa fa-umbrella'></i>${forechance}%</h4>
+        <h4>${forerain}</h4>
         </div>
       </div>
     `;
@@ -405,22 +415,43 @@ document.addEventListener("DOMContentLoaded", () => {
           document.querySelector(".electro-charged").classList.remove("hide");
         }
         data.minutely.forEach((minute) => {
-          const time = new Date(minute.dt * 1000).toLocaleTimeString("en-GB", {
+   
+          // const precipitation = Math.round(minute.precipitation * 100) / 100; // Round to 2 decimal places
+          const maxPrecipitation = Math.max(
+            ...data.minutely.map((minute) => minute.precipitation)
+          );
+            const timeUntilRain = data.minutely.findIndex(minute => minute.precipitation > 0);
+            // const timeUntilRainInMinutes = timeUntilRain !== -1 ? data.minutely[timeUntilRain].dt - data.minutely[0].dt : -1;
+            const allRain = data.minutely.every(minute => minute.precipitation > 0);
+            const timeUntilDry = data.minutely.findIndex(minute => minute.precipitation === 0);
+            // const timeUntilDryInMinutes = timeUntilDry !== -1 ? data.minutely[timeUntilDry].dt - data.minutely[0].dt : -1;
+            if (timeUntilRain === -1) {
+              document.querySelector("[time-to-rain]").innerHTML = `No precipitation in the next 60 minutes`;
+            } else if (timeUntilRain !== -1 && timeUntilDry === -1) {
+              document.querySelector("[time-to-rain]").innerHTML = `Precipitation expected in ${timeUntilRain} minutes`;
+            } else if (allRain){
+              document.querySelector("[time-to-rain]").innerHTML = `Rain will continue in the next 60 minutes`;
+            } else {document.querySelector("[time-to-rain]").innerHTML = `Rain will stop in ${timeUntilDry} minutes`;}
+            
+          const time = new Date(data.minutely[0].dt * 1000).toLocaleTimeString("en-GB", {
             hour: "2-digit",
             minute: "2-digit",
             hour12: false,
           });
-          const precipitation = Math.round(minute.precipitation * 100) / 100; // Round to 2 decimal places
-          const maxPrecipitation = Math.max(
-            ...data.minutely.map((minute) => minute.precipitation)
-          );
-          const transparency = precipitation / maxPrecipitation; // Calculate transparency based on max precipitation
-          const color = `rgba(65,245,114,${transparency})`; // Set color based on precipitation
-          document.querySelector(".realtime").innerHTML += `
-            <div class="minute-details" style="background-color: ${color};">
- 
-            </div>
-          `;
+          const futuretime = new Date(new Date().setHours(new Date().getHours() + 1)).toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          });
+          const saturation = maxPrecipitation > 0 ? (data.minutely[0].precipitation / maxPrecipitation) * 100 : 0; // Avoid division by zero
+          const color = `hsl(136, ${saturation}%, 60.8%)`; // Set color based on precipitation
+          document.querySelector("#maxprecip").innerHTML = `${maxPrecipitation}mm`;
+          document.querySelector(".to").innerHTML = `
+          <p>${time}</p> <p>${futuretime}</p>`;
+document.querySelector(".realtime").innerHTML += `
+  <div class="minute-details" style="background-color: ${color};">
+  </div>
+`;
         });
       })
       .catch((error) => {
@@ -429,6 +460,38 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
   
+  function getIcon(weatherIcon) {
+    if (weatherIcon === "11d") {
+      document.body.style.backgroundImage = "url('weather-bg/thunderstorm.jpg')";
+    } else if (weatherIcon === "09d") {
+      document.body.style.backgroundImage = "url('weather-bg/rainnight.jpg')";
+    } else if (weatherIcon === "10d") {
+      document.body.style.backgroundImage = "url('weather-bg/rain.jpg')";
+    } else if (weatherIcon === "13d") {
+      document.body.style.backgroundImage = "url('weather-bg/snow.jpg')";
+    } else if (weatherIcon === "50d") {
+      document.body.style.backgroundImage = "url('weather-bg/haze.jpg')";
+    } else if (weatherIcon === "01d") {
+      document.body.style.backgroundImage = "url('weather-bg/clear.jpg')";
+    } else if (weatherIcon === "02d") {
+      document.body.style.backgroundImage = "url('weather-bg/sctrday.jpg')";
+    } else if (weatherIcon === "03d") {
+      document.body.style.backgroundImage = "url('weather-bg/brokenday.jpg')";
+    } else if (weatherIcon === "04d") {
+      document.body.style.backgroundImage = "url('weather-bg/ocday.jpg')";
+    } else if (weatherIcon === "01n") {
+      document.body.style.backgroundImage = "url('weather-bg/clearnight.jpg')";
+    } else if (weatherIcon === "02n") {
+      document.body.style.backgroundImage = "url('weather-bg/sctrnight.jpg')";
+    } else if (weatherIcon === "03n") {
+      document.body.style.backgroundImage = "url('weather-bg/brokennight.jpg')";
+    } else if (weatherIcon === "04n") {
+      document.body.style.backgroundImage = "url('weather-bg/ocnight.jpg')";
+    } else if(weatherIcon === "10n") {
+      document.body.style.backgroundImage = "url('weather-bg/rainnight.jpg')";
+    }
+  }
+
   function saveData() {
     const locationName = document.querySelector("#locationName").textContent;
     const latlong = `${lat},${lon}`;
@@ -454,6 +517,7 @@ document.addEventListener("DOMContentLoaded", () => {
       getRealTimeWeather(lat, lon);
       getExtra(lat, lon);
       getHourlyWeather(lat, lon);
+      getIcon(weatherIcon);
     }
     if (
       !localStorage.getItem("locationName") &&
@@ -467,6 +531,7 @@ document.addEventListener("DOMContentLoaded", () => {
       getRealTimeWeather(lat, lon);
       getExtra(lat, lon);
       getHourlyWeather(lat, lon);
+      getIcon(weatherIcon);
       reloadButton.classList.add("hide");
       clearButton.classList.add("hide");
     } else {
@@ -483,5 +548,5 @@ document.addEventListener("DOMContentLoaded", () => {
     clearButton.classList.add("hide");
     document.querySelector("[get-saved-location]").classList.add("hide");
     alert("Location cleared successfully!");
-  }
+  } // Replace with the actual object or function you want to export
   
