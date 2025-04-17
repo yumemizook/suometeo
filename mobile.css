@@ -2,7 +2,7 @@
 Maybe let the website use the standard css on wider devices? */
 
 body{
-    background:   url("./weather-bg/cloudday.jpg");
+    background:   url("weather-bg/cloudday.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     color: white;
