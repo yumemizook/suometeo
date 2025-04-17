@@ -53,7 +53,7 @@
         </button>
       </div>
       <a href="index.html" class="w3-bar-item w3-button">Current weather</a>
-      <a href="hourly.html" class="w3-bar-item w3-button">48-Hour forecast</a>
+      <a href="#" class="w3-bar-item w3-button">48-Hour forecast</a>
       <a href="#" class="w3-bar-item w3-button">8-day forecast</a>
       <a href="#" class="w3-bar-item w3-button">History aggregation</a>
       <!-- I can't spell grrrrr  -->
@@ -88,12 +88,6 @@
         <button class="w3-button w3-xlarge w3-right w3-hide-large refresh" style="height:52px" save-location><i class="fa fa-refresh"></i></button>
       </div>
     </div>
-    <div class="datetime">
-      <div class="date">
-        <h4 id="date">-?-</h3>
-        <h3 id="time">-?-</h4>
-      </div>
-    </div>
 
     <div class="electro-charged">
       <!--Weather info will be stored here -->
@@ -102,40 +96,7 @@
         <div class="weatherinfo">
 
           <h2 id="locationName">-?-</h2>
-          <div class="superconduct">
-            <div class="aggregate">
-              <div class="swirl">
-                <img class="icon" src="" />
-                <p id="condition">-?-</p>
-              </div>
-              <div class="overloaded">
-                <h3 id="temperature">-?-</h3>
-                <h5 id="feelslike">RealFeel: -?-</h5>
-                <h4 id="tempmaxmin"></h4>
-              </div>
-            </div>
-          </div>
-
-          <br />
-          <div class="tartaglia">
-            <div class="legend">
-              <p>0mm</p>
-              <div class="gradient">  </div>
-              <p id="maxprecip"></p>
-            </div>
-            <h4 time-to-rain></h4>
-            <div class="realtime"></div>
-            <div class="to"></div>
-          </div>
-          <div class="extra">
-          <div class="extrastuff"><p class="humidity">Humidity: -?-</p></div>
-          <div class="extrastuff"><p class="wind">Wind Speed: -?-</p></div>
-          <div class="extrastuff"><p class="uvi">UV Index: -?-</p></div>
-          <div class="extrastuff"><p class="dewpoint">Dew point: -?-</p></div>
-          <div class="extrastuff"><p class="sunrise">Sunrise: -?-</p></div>
-          <div class="extrastuff"><p class="sunset">Sunset: -?-</p></div>
-        </div>
-        </div>
+ 
 
         <div class="hourlyforecasttitle">
           <h4>Next 8 hours</h4>
@@ -143,10 +104,6 @@
         <div class="hourlyforecast">
 
         </div>
-<div class="dailyforecasttitle">
-<h4>Next 3 days</h4>
-</div>
-        <div class="weatherforecast"></div>
       </div>
     </div>
     <script>
@@ -158,7 +115,7 @@
         document.getElementById("mySidebar").style.display = "none";
       }
     </script>
-<script src="./current.js"></script>
+    <script src="scripts/hourly.js"></script>
     <!-- <script type="module" src="./scripts/background.js"></script> -->
   </body>
 </html>

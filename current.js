@@ -20,6 +20,7 @@ let weatherIcon = ""
 document.addEventListener("DOMContentLoaded", () => {
      loadData();
     dateTime();
+    getIcon(weatherIcon);
   });
   window.onload = () => {
     getIcon(weatherIcon); // Replace with dynamic logic to fetch the actual weather icon
@@ -306,7 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <h5>${weather}</h5>
         <h4>${tempmax}°C</h4>
         <h4>${tempmin}°C</h4>
-        <h4><i class='fa fa-umbrella'></i> ${rainchance}% ${rain}</h4>
+        <h5><i class='fa fa-umbrella'></i> ${rainchance}% ${rain}</h5>
       </div>
     `;
         });
@@ -511,30 +512,22 @@ document.querySelector(".realtime").innerHTML += `
       const [savedLat, savedLon] = latlong.split(",");
       lat = parseFloat(savedLat); // Ensure lat and lon are numbers
       lon = parseFloat(savedLon);
-      getLocationName(lat, lon);
-      getWeather(lat, lon);
-      getForecast(lat, lon);
-      getRealTimeWeather(lat, lon);
-      getExtra(lat, lon);
-      getHourlyWeather(lat, lon);
-      getIcon(weatherIcon);
-    }
-    if (
-      !localStorage.getItem("locationName") &&
-      !localStorage.getItem("latlong")
-    ) {
-  lat = 35.021041;
-  lon = 135.7556075;
-  getLocationName(lat, lon);
-      getWeather(lat, lon);
-      getForecast(lat, lon);
-      getRealTimeWeather(lat, lon);
-      getExtra(lat, lon);
-      getHourlyWeather(lat, lon);
-      getIcon(weatherIcon);
+    } else {
+      lat = 35.021041;
+      lon = 135.7556075;
       reloadButton.classList.add("hide");
       clearButton.classList.add("hide");
-    } else {
+    }
+
+    getLocationName(lat, lon);
+    getWeather(lat, lon);
+    getForecast(lat, lon);
+    getRealTimeWeather(lat, lon);
+    getExtra(lat, lon);
+    getHourlyWeather(lat, lon);
+    getIcon(weatherIcon);
+
+    if (locationName && latlong) {
       clearButton.classList.remove("hide");
     }
   } // Call loadData on page load to check for saved data
@@ -548,5 +541,17 @@ document.querySelector(".realtime").innerHTML += `
     clearButton.classList.add("hide");
     document.querySelector("[get-saved-location]").classList.add("hide");
     alert("Location cleared successfully!");
-  } // Replace with the actual object or function you want to export
-  
+  }
+  // export {
+  //   latlongFetch,
+  //   getLocationName,
+  //   getWeather,
+  //   getForecast,
+  //   getRealTimeWeather,
+  //   getExtra,
+  //   getHourlyWeather,
+  //   getIcon,
+  //   saveData,
+  //   loadData,
+  //   clearSave,
+  // };
