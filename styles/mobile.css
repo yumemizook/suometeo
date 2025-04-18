@@ -1,0 +1,268 @@
+/* Supposedly this CSS stylesheet is for mobile devices.
+Maybe let the website use the standard css on wider devices? */
+
+body{
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    font-family: "Mochiy Pop P One"; /* This font is used in the original CSS */
+    font-size: smaller;
+    display: flex;
+    flex-direction: column;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+  }
+  /* you have no idea how much i hate predefined stylesheet fonts. */
+  h1{
+    font-family: 'Mochiy Pop P One';
+  }
+  h2{
+    font-family: 'Mochiy Pop P One';
+  }
+  h3{
+    font-family: 'Mochiy Pop P One';
+  }
+  h4{
+    font-family: 'Mochiy Pop P One';
+  }
+  h5{
+    font-family: 'Mochiy Pop P One';
+  }
+.iranoutofreactionnames{
+    display: flex;
+ text-align: center;
+ font-weight: bold;
+ font-size: larger;
+  }
+
+  .iranoutofreactionnames img{
+    width: 35%;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    margin-bottom: 10px
+  }
+  .burgeon{
+    display:flex;
+  }
+  input{
+    background-color: rgba(202, 250, 255, 0.8);
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 5px;
+    border: none;
+    font-size: inherit;
+    width:130px;
+    align-self: center;
+  }
+  
+   .burgeon button{
+    background-color: rgba(202, 250, 255, 0.8);
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    margin: 1px;
+    padding: 2px;
+    border: none;
+    font-size: inherit;
+    align-self: center;
+    height: auto;
+    width: 29px;
+    height: 29px; /* i think i should get a ruler and measure if the search bar and the button are leveled */
+  }
+
+  .datetime{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .datetime h3{
+    font-size: 4em;
+    margin: 0;
+  }
+
+  .datetime h4{
+    font-size: 2em;
+    margin: 0;
+  }
+.realtime{
+  display:grid;
+  grid-template-columns: repeat(60, 1fr);
+  gap: 1px;
+  /* background-color: rgba(255, 255, 255, 0.2); */
+  border-radius: 5px;
+  margin: 0px
+}
+
+.minute-details{
+  height:6px;
+}
+.to{
+  display: flex;
+  justify-content: space-between;
+}
+.weatherinfo {
+  justify-content: space-between;
+  margin-top: 50px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 30px;
+  padding: 20px;
+}
+.weatherinfo img {
+  width: auto;
+  height: auto;
+}
+.aggregate{
+  display: flex;
+  justify-content: space-between;
+}
+#temperature{
+  font-size: 4em;
+  text-shadow: 1px 1px 2px black;
+}
+#locationname {
+  font-size: 2em;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+.swirl{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+  .hide{
+    display: none;
+  }
+
+  .legend{
+    display: flex;
+    justify-content: space-around;
+align-items: center;
+  }
+  .legend p{
+    margin: 4px;
+    padding: 0;
+  
+  }
+  .gradient{
+   background-image: linear-gradient(to right, #9b9b9b, #37ff6c); 
+   border-radius: 5px;
+   width: 100%;
+   height: 8px;
+  }
+  .extra{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hourlyforecast{
+    display:flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.092);
+    border-radius: 10px;
+    margin: 30px;
+    padding: 20px;
+  }
+
+  .details{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:5px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .details h2{
+    font-size: 2em;
+    margin: 0;
+    padding: 0;
+  }
+  .sector2{
+    display: flex;
+    flex-direction: row;
+
+  }
+
+  .sector1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .sector2 img{
+    width: 50px;
+    height: 50px;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0px;
+  }
+
+  .sector3{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    margin: 0px;
+  }
+  .hourlyforecasttitle{
+    text-align: center;
+  }
+
+  .dailyforecasttitle{
+    text-align: center;
+  }
+
+  .weatherforecast{
+    display: grid;
+grid-template-columns: repeat(3, 1fr);
+    background-color: rgba(255, 255, 255, 0.092);
+    border-radius: 10px;
+    margin: 30px;
+    padding: 20px;
+  }
+
+  .weatherforecast .details{
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+  }
+.weatherforecast .details h2{
+    font-size: 1.5em;
+    margin: 0;
+    padding: 0;
+  }
+
+  .weatherforecast h5{
+    font-size: 0.95em;
+    margin: 0;
+    padding: 0;
+  }
+
+  .weatherforecast h4{
+    font-size: 2em;
+    margin: 0;
+    padding: 3px;
+  }
+i{
+font-size: 1.25em;
+  margin: 0;
+  padding: 0;
+}

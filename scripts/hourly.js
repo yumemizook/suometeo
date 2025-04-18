@@ -1,5 +1,5 @@
-//const apiKey = "c4f58d4cdd136760eb52085ad054767f"; //just because i already have one //temporary backup key
-const apiKey = "c03e728ec54244994b0935a453bcb87c"; // backup key
+const apiKey = "c4f58d4cdd136760eb52085ad054767f"; //just because i already have one //temporary backup key
+//const apiKey = "c03e728ec54244994b0935a453bcb87c"; // backup key
 const locationFetch = document.querySelector(".get-location-auto");
 const searchQuery = new URLSearchParams(location.search);
 const query = searchQuery.get("q")?.trim();
@@ -16,14 +16,13 @@ let tempmax, tempmin; // Declare global variables for max and min temperature
 
 let statecode = ""; // Declare statecode variable
 let countrycode = ""; // Declare countrycode variable
-let weatherIcon = ""
+let accentIcon = ""
 document.addEventListener("DOMContentLoaded", () => {
      loadData();
-    dateTime();
-    getIcon(weatherIcon);
+    getIcon(accentIcon);
   });
   window.onload = () => {
-    getIcon(weatherIcon); // Replace with dynamic logic to fetch the actual weather icon
+    getIcon(accentIcon); // Replace with dynamic logic to fetch the actual weather icon
   };
 
 
@@ -39,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getLocationName(lat, lon); // i kept thinking it doesnt work until i realized i forgot to include this function
     //   getExtra(lat, lon);
       getHourlyWeather(lat, lon);
-      getIcon(weatherIcon);
+      getIcon(accentIcon);
       locationInput.value = ""; // Clear the input field after fetching
     });
   });
@@ -49,11 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
     locationInput.value = "";
     document.querySelector(".electro-charged").classList.add("hide");
     document.querySelector(".crystalize").classList.add("hide");
-    document.querySelector(".refresh").classList.remove("hide");
+    // document.querySelector(".refresh").classList.remove("hide");
     getLocationName(lat, lon);
     // getExtra(lat, lon);
     getHourlyWeather(lat, lon);
-    getIcon(weatherIcon);
+    getIcon(accentIcon);
   });
   
   reloadButton.addEventListener("click", () => {
@@ -68,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
       getLocationName(lat, lon);
     //   getExtra(lat, lon);
       getHourlyWeather(lat, lon);
-      getIcon(weatherIcon);
+      getIcon(accentIcon);
     } else {
       document.querySelector("[get-saved-location]").classList.add("hide");
       document.querySelector(".crystalize").classList.add("hide");
@@ -85,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getLocationName(lat, lon);
         // getExtra(lat, lon);
         getHourlyWeather(lat, lon);
-        getIcon(weatherIcon);
+        getIcon(accentIcon);
       },
       (error) => {
         console.error("Error getting location:", error.message);
@@ -196,9 +195,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!locationInput.value.trim()) {
     document.querySelector(".electro-charged").classList.add("hide");
     document.querySelector(".crystalize").classList.add("hide");
-    document.querySelector(".refresh").classList.add("hide");
+    // document.querySelector(".refresh").classList.add("hide");
   } else {
-    document.querySelector(".refresh").classList.remove("hide");
+    // document.querySelector(".refresh").classList.remove("hide");
   }
   
   
@@ -214,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.cod !== 200) {
           document.querySelector(".electro-charged").classList.remove("hide");
         }
-        data.hourly.slice(0, 8).forEach((hourly) => {
+        data.hourly.forEach((hourly) => {
           // 48 hours can be fetched in another page
           const weather = hourly.weather[0].description;
           const weatherIcon = hourly.weather[0].icon;
@@ -226,10 +225,16 @@ document.addEventListener("DOMContentLoaded", () => {
               weekday: "long",
             }
           );
-
+          const day = new Date(hourly.dt * 1000).getDate();
+          const month = new Date(hourly.dt * 1000).toLocaleString("default", {
+            month: "long",
+          });
           const foretemp = Math.round(hourly.temp);
-          // const forehumidity = Math.round(hourly.humidity);
+const forefeels = Math.round(hourly.feels_like);
+          const forehumidity = hourly.humidity; //i dont think rounding is needed
           const forechance = Math.round(hourly.pop * 100);
+          const timehue = (hour / 24) * 360; // Calculate hue based on hour of the day (0-23)
+        const timecolor = `hsl(${timehue}, 100%, 50%)`; // Set color based on hour of the day
           let forerain = "";
           if (forechance > 0 && hourly.rain) {
             forerain = "(" + Math.round(hourly.rain["1h"] * 100) / 100 + "mm)";
@@ -239,17 +244,24 @@ document.addEventListener("DOMContentLoaded", () => {
           document.querySelector(".hourlyforecast").innerHTML += `
       <div class="details">
       <div class="sector1">
-        <h2>${hour}</h2>
+        <h2 style="text-shadow: 0 0 5px ${timecolor};">${hour}</h2>
         <p>${dayofweek} </p>
+              <p>${month} ${day}<p>
         </div>
         <div class="sector2">
         <img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" alt="${weather}">
         
         <h3>${foretemp}°C</h3>
         </div>
+        <div class="sector5">
+        <i class="fa-solid fa-temperature-high"></i> <h4>${forefeels}°C </h4>
+        </div>
+        <div class="sector4">
+        <i class="fa-solid fa-droplet"></i><h4>${forehumidity}%</h4>
+        </div>
         <div class="sector3">
-        <h4><i class='fa fa-umbrella'></i>${forechance}%</h4>
-        <h4>${forerain}</h4>
+        <h4><i class="fa-solid fa-cloud-showers-heavy"></i>${forechance}%</h4>
+        <h5>${forerain}</h5>
         </div>
       </div>
     `;
@@ -261,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Error fetching weather data:", error);
         document.querySelector(".crystalize").classList.add("hide");
         document.querySelector(".electro-charged").classList.remove("hide");
-        document.querySelector(".refresh").classList.remove("hide");
+        // document.querySelector(".refresh").classList.remove("hide");
       });
     if (
       !localStorage.getItem("locationName") &&
@@ -274,36 +286,48 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   
-  function getIcon(weatherIcon) {
-    if (weatherIcon === "11d") {
-      document.body.style.backgroundImage = "url('weather-bg/thunderstorm.jpg')";
-    } else if (weatherIcon === "09d") {
-      document.body.style.backgroundImage = "url('weather-bg/rainnight.jpg')";
-    } else if (weatherIcon === "10d") {
-      document.body.style.backgroundImage = "url('weather-bg/rain.jpg')";
-    } else if (weatherIcon === "13d") {
-      document.body.style.backgroundImage = "url('weather-bg/snow.jpg')";
-    } else if (weatherIcon === "50d") {
-      document.body.style.backgroundImage = "url('weather-bg/haze.jpg')";
-    } else if (weatherIcon === "01d") {
-      document.body.style.backgroundImage = "url('weather-bg/clear.jpg')";
-    } else if (weatherIcon === "02d") {
-      document.body.style.backgroundImage = "url('weather-bg/sctrday.jpg')";
-    } else if (weatherIcon === "03d") {
-      document.body.style.backgroundImage = "url('weather-bg/brokenday.jpg')";
-    } else if (weatherIcon === "04d") {
-      document.body.style.backgroundImage = "url('weather-bg/ocday.jpg')";
-    } else if (weatherIcon === "01n") {
-      document.body.style.backgroundImage = "url('weather-bg/clearnight.jpg')";
-    } else if (weatherIcon === "02n") {
-      document.body.style.backgroundImage = "url('weather-bg/sctrnight.jpg')";
-    } else if (weatherIcon === "03n") {
-      document.body.style.backgroundImage = "url('weather-bg/brokennight.jpg')";
-    } else if (weatherIcon === "04n") {
-      document.body.style.backgroundImage = "url('weather-bg/ocnight.jpg')";
-    } else if(weatherIcon === "10n") {
-      document.body.style.backgroundImage = "url('weather-bg/rainnight.jpg')";
-    }
+  function getIcon() {
+    fetch(
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,alerts&appid=${apiKey}&units=metric`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+
+        const accentIcon = data.current.weather[0].icon;
+        if (accentIcon === "11d") {
+          document.body.style.backgroundImage = "url('weather-bg/thunderstorm.jpg')";
+        } else if (accentIcon === "09d") {
+          document.body.style.backgroundImage = "url('weather-bg/rainnight.jpg')";
+        } else if (accentIcon === "10d") {
+          document.body.style.backgroundImage = "url('weather-bg/rain.jpg')";
+        } else if (accentIcon === "13d") {
+          document.body.style.backgroundImage = "url('weather-bg/snow.jpg')";
+        } else if (accentIcon === "50d") {
+          document.body.style.backgroundImage = "url('weather-bg/haze.jpg')";
+        } else if (accentIcon === "01d") {
+          document.body.style.backgroundImage = "url('weather-bg/clear.jpg')";
+        } else if (accentIcon === "02d") {
+          document.body.style.backgroundImage = "url('weather-bg/sctrday.jpg')";
+        } else if (accentIcon === "03d") {
+          document.body.style.backgroundImage = "url('weather-bg/brokenday.jpg')";
+        } else if (accentIcon === "04d") {
+          document.body.style.backgroundImage = "url('weather-bg/ocday.jpg')";
+        } else if (accentIcon === "01n") {
+          document.body.style.backgroundImage = "url('weather-bg/clearnight.jpg')";
+        } else if (accentIcon === "02n") {
+          document.body.style.backgroundImage = "url('weather-bg/sctrnight.jpg')";
+        } else if (accentIcon === "03n") {
+          document.body.style.backgroundImage = "url('weather-bg/brokennight.jpg')";
+        } else if (accentIcon === "04n") {
+          document.body.style.backgroundImage = "url('weather-bg/ocnight.jpg')";
+        } else if (accentIcon === "10n") {
+          document.body.style.backgroundImage = "url('weather-bg/rainnight.jpg')";
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching weather icon data:", error);
+      });
   }
 
   function saveData() {
@@ -335,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
     getLocationName(lat, lon);
     // getExtra(lat,lon);
     getHourlyWeather(lat, lon);
-    getIcon(weatherIcon);
+    getIcon(accentIcon);
 
     if (locationName && latlong) {
       clearButton.classList.remove("hide");
@@ -346,11 +370,13 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("locationName");
     localStorage.removeItem("latlong");
     locationInput.value = ""; // Clear the input field
-    document.querySelector(".refresh").classList.remove("hide"); // Hide the refresh button
+    // document.querySelector(".refresh").classList.remove("hide"); // Hide the refresh button
   
     clearButton.classList.add("hide");
     document.querySelector("[get-saved-location]").classList.add("hide");
     alert("Location cleared successfully!");
+
+    
   }
   // export {
   //   latlongFetch,

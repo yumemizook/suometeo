@@ -1,0 +1,130 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiny Weather viewer</title>
+
+    <link rel="shortcut icon" href="./icon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" href="./styles/daily.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Mochiy+Pop+P+One&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://kit.fontawesome.com/7263e3a28f.js" crossorigin="anonymous"></script>
+    <style></style>
+  </head>
+  <body>
+    <!-- I should have gone with vanilla CSS instead this is melting my brain -->
+    <div
+      class="w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left w3-black"
+      style="opacity: 0.8"
+      style="width: 200px; left: 0"
+      id="mySidebar"
+    >
+      <button
+        class="w3-bar-item w3-button w3-xlarge w3-hide-large"
+        onclick="w3_close()"
+      >
+        &#9776;
+      </button>
+      <div class="iranoutofreactionnames">
+        <img src="./icon.png" alt="" />
+        <p>Tiny Weather viewer</p>
+      </div>
+      <div class="burgeon">
+        <input
+          type="text"
+          id="location"
+          get-location
+          placeholder="Enter a location"
+        />
+        <button id="searchBtn" get-location-button>
+          <i class="fa fa-search"></i>
+        </button>
+        <button class="get-location-auto">
+          <i class="fa fa-crosshairs"></i>
+        </button>
+      </div>
+      <a href="index.html" class="w3-bar-item w3-button">Current weather</a>
+      <a href="hourly.html" class="w3-bar-item w3-button">48-Hour forecast</a>
+      <a href="daily.html" class="w3-bar-item w3-button">8-day forecast</a>
+      <a href="weathermap.html" class="w3-bar-item w3-button">Weather Map</a>
+      <!-- I can't spell grrrrr  -->
+      <button
+        href="#"
+        class="w3-bar-item w3-button"
+        style="position: absolute; bottom: 80; width: 100%"
+        save-location
+      >
+        Save location
+      </button>
+      <button
+        href="#"
+        class="w3-bar-item w3-button"
+        style="position: absolute; bottom: 30; width: 100%"
+        get-saved-location
+      >
+        Return to saved location
+      </button>
+      <button
+        href="#"
+        class="w3-bar-item w3-button"
+        style="position: absolute; bottom: 0; width: 100%"
+        clear-location
+      >
+        Delete saved location
+      </button>
+    </div>
+    <div class="w3-main" style="margin-right: 200px">
+      <div class="w3">
+        <button
+          class="w3-button w3-xlarge w3-left w3-hide-large"
+          onclick="w3_open()"
+        >
+          &#9776;
+        </button>
+
+        <button
+          class="w3-button w3-xlarge w3-right w3-hide-large refresh"
+          style="height: 52px"
+        >
+          <i class="fa fa-refresh"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="electro-charged">
+      <!--Weather info will be stored here -->
+      <div class="crystalize hide">Loading...</div>
+      <div class="weathercontainer">
+        <div class="weatherinfo">
+          <h2 id="locationName">-?-</h2>
+
+          <div class="dailyforecasttitle">
+            <h4>Next 8 days</h4>
+          </div>
+          <div class="weatherforecast"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+      }
+
+      function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+      }
+    </script>
+    <script src="./scripts/daily.js"></script>
+    <!-- <script type="module" src="./scripts/background.js"></script> -->
+  </body>
+</html>

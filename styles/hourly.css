@@ -1,0 +1,183 @@
+/* debating whether should i merge this file with the main stylssheet. */
+body {
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: white;
+  font-family: "Mochiy Pop P One"; /* This font is used in the original CSS */
+  font-size: smaller;
+  display: flex;
+  flex-direction: column;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: -1;
+}
+/* you have no idea how much i hate predefined stylesheet fonts. */
+h1 {
+  font-family: "Mochiy Pop P One";
+}
+h2 {
+  font-family: "Mochiy Pop P One";
+}
+h3 {
+  font-family: "Mochiy Pop P One";
+}
+h4 {
+  font-family: "Mochiy Pop P One";
+}
+h5 {
+  font-family: "Mochiy Pop P One";
+}
+.iranoutofreactionnames {
+  display: flex;
+  text-align: center;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.iranoutofreactionnames img {
+  width: 35%;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.burgeon {
+  display: flex;
+}
+input {
+  background-color: rgba(202, 250, 255, 0.8);
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+  padding: 5px;
+  margin-left: 5px;
+  border: none;
+  font-size: inherit;
+  width: 130px;
+  align-self: center;
+}
+
+.burgeon button {
+  background-color: rgba(202, 250, 255, 0.8);
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+  margin: 1px;
+  padding: 2px;
+  border: none;
+  font-size: inherit;
+  align-self: center;
+  height: auto;
+  width: 29px;
+  height: 29px; /* i think i should get a ruler and measure if the search bar and the button are leveled */
+}
+
+.hourlyforecasttitle {
+  text-align: center;
+}
+
+#locationname {
+  text-align: center;
+  font-size: 3em;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.hourlyforecast {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.details {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap:5px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.electro-charged {
+  background-color: rgba(80, 80, 80, 0.4);
+  margin: 20px;
+  border-radius: 10px;
+  padding: 10px;
+}
+.sector2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.sector1 {
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+.sector2 img {
+  width: 50px;
+  height: 50px;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0px;
+}
+
+.sector3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  margin: 0px;
+}
+.hide {
+  display: none;
+}
+
+.hourlyforecast .details .sector2 h3{
+    font-size:1.76em;
+}
+
+.hourlyforecast .details .sector5 h5{
+    font-size:01em;
+}
+.hourlyforecast .details .sector5 h4{
+    font-size:1.75em;
+}
+.hourlyforecast .details .sector4 h5{
+    font-size:01em;
+}
+.hourlyforecast .details .sector4 h4{
+    font-size:01.75em;
+}
+.hourlyforecast .details .sector3 h5{
+    font-size:0.9em;
+}
+
+.hourlyforecast .details .sector3{
+    display: flex;
+    flex-direction: column;
+}
+
+.hourlyforecast .details .sector4{
+    display: flex;
+    flex-direction: column;
+}
+.hourlyforecast .details .sector5{
+    display: flex;
+    flex-direction: column;
+}
+
+i{
+    font-size: 2em;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
