@@ -79,13 +79,21 @@ body{
     width: 29px;
     height: 29px; /* i think i should get a ruler and measure if the search bar and the button are leveled */
   }
-
+.hourlyforecast .details .sector3 h5{
+  font-size: 0.95em;
+}
   .datetime{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+  }
+  #feelslike{
+    font-size: 1.05em;
+  }
+  #tempmaxmin{
+    font-size: 1.25em;
   }
   .datetime h3{
     font-size: 4em;
@@ -193,8 +201,15 @@ align-items: center;
   }
   .sector2{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+align-items: center;
+  }
 
+  .sector2 h3{
+    text-align: center;
+    font-size: 1.25em;
+    margin: 0;
+    padding: 0;
   }
 
   .sector1{

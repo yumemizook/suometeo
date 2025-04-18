@@ -20,7 +20,6 @@ let weatherIcon = "";
 document.addEventListener("DOMContentLoaded", () => {
   loadData();
   dateTime();
-  getIcon(weatherIcon);
 });
 window.onload = () => {
   getIcon(weatherIcon); // Replace with dynamic logic to fetch the actual weather icon
@@ -388,7 +387,7 @@ const timehue = (hour / 24) * 360; // Calculate hue based on hour of the day (0-
         </div>
         <div class="sector3">
         <h4><i class="fa-solid fa-cloud-showers-heavy"></i>${forechance}%</h4>
-        <h4>${forerain}</h4>
+        <h5>${forerain}</h5>
         </div>
       </div>
     `;
