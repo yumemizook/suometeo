@@ -190,8 +190,8 @@ function getWeather(lat, lon) {
       const tempmax = Math.round(data.daily[0].temp.max); //until the current weather can return something else rather than 3 same values
       const tempmin = Math.round(data.daily[0].temp.min);
       const realfeel = Math.round(data.current.feels_like);
-      const temphue = Math.min(187, Math.max(280 - temp * 9, -30));
-      const temphsl = `hsl(${temphue}, 50%, 50%)`;
+      const temphue = Math.min(187, Math.max(280 - temp * 9, -79));
+      const temphsl = `hsl(${temphue}, 100%, 50%)`;
       document.querySelector(".electro-charged").classList.remove("hide");
 
       document.querySelector("#condition").innerHTML = weather;
