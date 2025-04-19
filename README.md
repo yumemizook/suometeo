@@ -1,5 +1,5 @@
 <img src="https://i.ibb.co/ycPtRPtW/title.png"></img>
-<h1>A project extended from <a href="https://github.com/yumemizook/not-so-tiny-weather-viewer"></a></h1>
+<h2>A project extended from <a href="https://github.com/yumemizook/not-so-tiny-weather-viewer">not-so-tiny-weather-viewer</a></h2>
 
 <h1>Features</h1>
 <ul>
