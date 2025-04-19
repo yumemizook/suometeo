@@ -190,13 +190,16 @@ function getWeather(lat, lon) {
       const tempmax = Math.round(data.daily[0].temp.max); //until the current weather can return something else rather than 3 same values
       const tempmin = Math.round(data.daily[0].temp.min);
       const realfeel = Math.round(data.current.feels_like);
+      const temphue = Math.min(187, Math.max(280 - temp * 9, -30));
+      const temphsl = `hsl(${temphue}, 50%, 50%)`;
       document.querySelector(".electro-charged").classList.remove("hide");
 
       document.querySelector("#condition").innerHTML = weather;
       document.querySelector("#temperature").innerHTML = `${temp}°C`; //because fuck imperial
+      document.querySelector("#temperature").style.textShadow = `1px 1px 2px ${temphsl}`;
       document.querySelector("#tempmaxmin").innerHTML =
         `<i class="fa-solid fa-temperature-arrow-up"></i> ${tempmax}°C` + " / " + `<i class="fa-solid fa-temperature-arrow-down"></i> ${tempmin}°C`;
-      document.querySelector("#feelslike").innerHTML =
+      document.querySelector("#feelslike").innerHTML = 
         `<i class="fa-solid fa-temperature-high"></i>  ${realfeel}°C`;
       document.querySelector(".crystalize").classList.add("hide");
       document.querySelector(".refresh").classList.remove("hide");
@@ -357,12 +360,22 @@ function getHourlyWeather(lat, lon) {
         const weatherIcon = hourly.weather[0].icon;
         const hour = new Date(hourly.dt * 1000).getHours();
 
-        const dayofweek = new Date(hourly.dt * 1000).toLocaleDateString(
+        const dateOfWeek = new Date(hourly.dt * 1000).toLocaleDateString(
           "en-US",
           {
             weekday: "long",
           }
         );
+        const daycolor = (() => {
+          if (dateOfWeek === "Monday") return "cyan";
+          if (dateOfWeek === "Tuesday") return "orange";
+          if (dateOfWeek === "Wednesday") return "pink";
+          if (dateOfWeek === "Thursday") return "purple";
+          if (dateOfWeek === "Friday") return "lime";
+          if (dateOfWeek === "Saturday") return "white";
+          if (dateOfWeek === "Sunday") return "red";
+        })();
+
 const timehue = (hour / 24) * 360; // Calculate hue based on hour of the day (0-23)
         const timecolor = `hsl(${timehue}, 100%, 50%)`; // Set color based on hour of the day
         const foretemp = Math.round(hourly.temp);
@@ -378,7 +391,7 @@ const timehue = (hour / 24) * 360; // Calculate hue based on hour of the day (0-
       <div class="details">
       <div class="sector1">
         <h2 style="text-shadow: 0 0 5px ${timecolor};">${hour}</h2>
-        <p>${dayofweek} </p>
+        <p style="text-shadow: 0 0 5px ${daycolor};">${dateOfWeek}</p>
         </div>
         <div class="sector2">
         <img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" alt="${weather}">

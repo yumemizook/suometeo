@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const weatherIcon = hourly.weather[0].icon;
           const hour = new Date(hourly.dt * 1000).getHours();
  
-          const dayofweek = new Date(hourly.dt * 1000).toLocaleDateString(
+          const dateOfWeek = new Date(hourly.dt * 1000).toLocaleDateString(
             "en-US",
             {
               weekday: "long",
@@ -234,6 +234,16 @@ const forefeels = Math.round(hourly.feels_like);
           const forehumidity = hourly.humidity; //i dont think rounding is needed
           const forechance = Math.round(hourly.pop * 100);
           const timehue = (hour / 24) * 360; // Calculate hue based on hour of the day (0-23)
+          const daycolor = (() => {
+            if (dateOfWeek === "Monday") return "cyan";
+            if (dateOfWeek === "Tuesday") return "orange";
+            if (dateOfWeek === "Wednesday") return "pink";
+            if (dateOfWeek === "Thursday") return "purple";
+            if (dateOfWeek === "Friday") return "lime";
+            if (dateOfWeek === "Saturday") return "white";
+            if (dateOfWeek === "Sunday") return "red";
+          })();
+
         const timecolor = `hsl(${timehue}, 100%, 50%)`; // Set color based on hour of the day
           let forerain = "";
           if (forechance > 0 && hourly.rain) {
@@ -245,9 +255,9 @@ const forefeels = Math.round(hourly.feels_like);
       <div class="details">
       <div class="sector1">
         <h2 style="text-shadow: 0 0 5px ${timecolor};">${hour}</h2>
-        <p>${dayofweek} </p>
-              <p>${month} ${day}<p>
-        </div>
+        <p style="text-shadow: 0 0 5px ${daycolor};">${dateOfWeek}</p>
+        <p>${month} ${day}</p>
+      </div>
         <div class="sector2">
         <img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" alt="${weather}">
         
