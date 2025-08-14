@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       (position) => {
         lat = position.coords.latitude; // Assign values to global variables
         lon = position.coords.longitude;
-        console.log(lat, lon); // logged just in case something is off
+        // Coordinates logged for debugging
         getLocationName(lat, lon);
         // getExtra(lat, lon);
         getHourlyWeather(lat, lon);
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (latlong.length > 0) {
         lat = latlong[0].lat;
         lon = latlong[0].lon;
-        console.log(`${lat} ${lon}`);
+        // Coordinates fetched successfully
       } else {
         console.error("No results found for the provided city name.");
         alert("No results found for the provided city name. Please try again.");
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // Location data received
         if (data.cod !== 200) {
           document.querySelector(".electro-charged").classList.remove("hide");
         }
@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // Hourly weather data received
         if (data.cod !== 200) {
           document.querySelector(".electro-charged").classList.remove("hide");
         }
@@ -312,7 +312,7 @@ const forefeels = Math.round(hourly.feels_like);
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // Weather icon data received
 
         const accentIcon = data.current.weather[0].icon;
         if (accentIcon === "11d") {

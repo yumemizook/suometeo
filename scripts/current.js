@@ -98,7 +98,7 @@ locationFetch.addEventListener("click", () => {
     (position) => {
       lat = position.coords.latitude; // Assign values to global variables
       lon = position.coords.longitude;
-      console.log(lat, lon); // logged just in case something is off
+      // Coordinates logged for debugging
       getLocationName(lat, lon);
       getWeather(lat, lon);
       getForecast(lat, lon);
@@ -149,7 +149,7 @@ async function latlongFetch(cityname, statecode, countrycode) {
     if (latlong.length > 0) {
       lat = latlong[0].lat;
       lon = latlong[0].lon;
-      console.log(`${lat} ${lon}`);
+      // Coordinates fetched successfully
     } else {
       console.error("No results found for the provided city name.");
       alert("No results found for the provided city name. Please try again.");
@@ -184,7 +184,7 @@ function getLocationName(lat, lon) {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
+      // Weather data received
       if (data.cod !== 200) {
         console.error("API returned error:", data.message);
         document.querySelector(".crystalize").classList.add("hide");
@@ -213,7 +213,7 @@ function getWeather(lat, lon) {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
+      // Weather data received
       if (data.cod && data.cod !== 200) {
         console.error("API returned error:", data.message);
         document.querySelector(".crystalize").classList.add("hide");
@@ -232,7 +232,7 @@ function getWeather(lat, lon) {
       const realfeel = Math.round(data.current.feels_like);
       const temphue = Math.min(248, Math.max(187 - temp * 6.375, -79));
       const temphsl = `hsl(${temphue}, 100%, 50%)`;
-      console.log(temphue)
+      // Temperature hue calculated for styling
       document.querySelector(".electro-charged").classList.remove("hide");
 
       document.querySelector("#condition").innerHTML = weather;
@@ -266,7 +266,7 @@ function getExtra(lat, lon) {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
+      // Extra weather data received
       if (data.cod && data.cod !== 200) {
         console.error("API returned error:", data.message);
         document.querySelector(".crystalize").classList.add("hide");
@@ -328,7 +328,7 @@ function getForecast(lat, lon) {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
+      // Forecast data received
       if (data.cod && data.cod !== 200) {
         console.error("API returned error:", data.message);
         document.querySelector(".crystalize").classList.add("hide");
@@ -363,7 +363,7 @@ function getForecast(lat, lon) {
           if (dateOfWeek === "Saturday") return "white";
           if (dateOfWeek === "Sunday") return "red";
         })();
-        console.log();
+        // Day color calculated for styling
 
         // Append forecast details
         document.querySelector(".weatherforecast").innerHTML += `
@@ -405,7 +405,7 @@ function getHourlyWeather(lat, lon) {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // Hourly weather data received
       if (data.cod !== 200) {
         document.querySelector(".electro-charged").classList.remove("hide");
       }
@@ -489,7 +489,7 @@ function getRealTimeWeather(lat, lon) {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // Real-time weather data received
       if (data.cod !== 200) {
         document.querySelector(".electro-charged").classList.remove("hide");
       }
@@ -508,7 +508,7 @@ function getRealTimeWeather(lat, lon) {
         const timeUntilDry = data.minutely.findIndex(
           (minute) => minute.precipitation === 0
         );
-        console.log(timeUntilDry,timeUntilRain,allRain);
+        // Precipitation timing calculated
         // const timeUntilDryInMinutes = timeUntilDry !== -1 ? data.minutely[timeUntilDry].dt - data.minutely[0].dt : -1;
         if (timeUntilRain === -1) {
           document.querySelector(
