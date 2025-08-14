@@ -1,15 +1,5 @@
-// Import configuration
-// const apiKey = "c4f58d4cdd136760eb52085ad054767f"; //just because i already have one //temporary backup key
+const apiKey = "c4f58d4cdd136760eb52085ad054767f"; //just because i already have one //temporary backup key
 //const apiKey = "c03e728ec54244994b0935a453bcb87c"; // backup key
-
-// Use configuration for API key
-const apiKey = config.openWeatherApiKey;
-
-// Validate API key
-if (!apiKey || apiKey === "YOUR_OPENWEATHER_API_KEY_HERE") {
-  console.error("Please configure your OpenWeatherMap API key in config.js");
-  alert("API key not configured. Please check the configuration file.");
-}
 const locationFetch = document.querySelector(".get-location-auto");
 const searchQuery = new URLSearchParams(location.search);
 const query = searchQuery.get("q")?.trim();
@@ -90,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       (position) => {
         lat = position.coords.latitude; // Assign values to global variables
         lon = position.coords.longitude;
-        // Coordinates logged for debugging
+        console.log(lat, lon); // logged just in case something is off
         getLocationName(lat, lon);
         // getExtra(lat, lon);
         getHourlyWeather(lat, lon);
@@ -127,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (latlong.length > 0) {
         lat = latlong[0].lat;
         lon = latlong[0].lon;
-        // Coordinates fetched successfully
+        console.log(`${lat} ${lon}`);
       } else {
         console.error("No results found for the provided city name.");
         alert("No results found for the provided city name. Please try again.");
@@ -148,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        // Location data received
+        console.log(data);
         if (data.cod !== 200) {
           document.querySelector(".electro-charged").classList.remove("hide");
         }
@@ -219,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        // Hourly weather data received
+        console.log(data);
         if (data.cod !== 200) {
           document.querySelector(".electro-charged").classList.remove("hide");
         }
@@ -312,7 +302,7 @@ const forefeels = Math.round(hourly.feels_like);
     )
       .then((response) => response.json())
       .then((data) => {
-        // Weather icon data received
+        console.log(data);
 
         const accentIcon = data.current.weather[0].icon;
         if (accentIcon === "11d") {
