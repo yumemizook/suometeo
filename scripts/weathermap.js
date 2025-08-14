@@ -1,4 +1,14 @@
-const apiKey = "c4f58d4cdd136760eb52085ad054767f";
+// Import configuration
+// const apiKey = "c4f58d4cdd136760eb52085ad054767f";
+
+// Use configuration for API key
+const apiKey = config.openWeatherApiKey;
+
+// Validate API key
+if (!apiKey || apiKey === "YOUR_OPENWEATHER_API_KEY_HERE") {
+  console.error("Please configure your OpenWeatherMap API key in config.js");
+  alert("API key not configured. Please check the configuration file.");
+}
 
 getWeatherMap();
 

@@ -1,5 +1,15 @@
-const apiKey = "c4f58d4cdd136760eb52085ad054767f"; //just because i already have one //temporary backup key
+// Import configuration
+// const apiKey = "c4f58d4cdd136760eb52085ad054767f"; //just because i already have one //temporary backup key
 //const apiKey = "c03e728ec54244994b0935a453bcb87c"; // backup key
+
+// Use configuration for API key
+const apiKey = config.openWeatherApiKey;
+
+// Validate API key
+if (!apiKey || apiKey === "YOUR_OPENWEATHER_API_KEY_HERE") {
+  console.error("Please configure your OpenWeatherMap API key in config.js");
+  alert("API key not configured. Please check the configuration file.");
+}
 const locationFetch = document.querySelector(".get-location-auto");
 const searchQuery = new URLSearchParams(location.search);
 const query = searchQuery.get("q")?.trim();
