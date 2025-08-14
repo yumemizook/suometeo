@@ -1,5 +1,15 @@
-const apiKey = "c4f58d4cdd136760eb52085ad054767f"; //just because i already have one //temporary backup key
+// Import configuration
+// const apiKey = "c4f58d4cdd136760eb52085ad054767f"; //just because i already have one //temporary backup key
 //const apiKey = "c03e728ec54244994b0935a453bcb87c"; // backup key
+
+// Use configuration for API key
+const apiKey = config.openWeatherApiKey;
+
+// Validate API key
+if (!apiKey || apiKey === "YOUR_OPENWEATHER_API_KEY_HERE") {
+  console.error("Please configure your OpenWeatherMap API key in config.js");
+  alert("API key not configured. Please check the configuration file.");
+}
 const locationFetch = document.querySelector(".get-location-auto");
 const searchQuery = new URLSearchParams(location.search);
 const query = searchQuery.get("q")?.trim();
@@ -88,7 +98,7 @@ locationFetch.addEventListener("click", () => {
     (position) => {
       lat = position.coords.latitude; // Assign values to global variables
       lon = position.coords.longitude;
-      console.log(lat, lon); // logged just in case something is off
+      // Coordinates logged for debugging
       getLocationName(lat, lon);
       getWeather(lat, lon);
       getForecast(lat, lon);
@@ -119,15 +129,27 @@ async function latlongFetch(cityname, statecode, countrycode) {
   const stateParam = statecode ? `,${statecode}` : "";
   const countryParam = countrycode ? `,${countrycode}` : "";
   document.querySelector(".crystalize").classList.remove("hide");
+  
+  if (!cityname || !cityname.trim()) {
+    alert("Please enter a city name.");
+    document.querySelector(".crystalize").classList.add("hide");
+    return;
+  }
+  
   try {
     const response = await fetch(
-      `https://api.openweathermap.org/geo/1.0/direct?q=${cityname}${stateParam}${countryParam}&limit=5&appid=${apiKey}`
+      `${config.openWeatherGeoUrl}?q=${encodeURIComponent(cityname)}${stateParam}${countryParam}&limit=5&appid=${apiKey}`
     );
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const latlong = await response.json();
     if (latlong.length > 0) {
       lat = latlong[0].lat;
       lon = latlong[0].lon;
-      console.log(`${lat} ${lon}`);
+      // Coordinates fetched successfully
     } else {
       console.error("No results found for the provided city name.");
       alert("No results found for the provided city name. Please try again.");
@@ -153,31 +175,49 @@ function dateTime() {
 function getLocationName(lat, lon) {
   document.querySelector(".crystalize").classList.remove("hide");
   fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+    `${config.openWeatherCurrentUrl}?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
   )
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then((data) => {
-      console.log(data);
+      // Weather data received
       if (data.cod !== 200) {
-        document.querySelector(".electro-charged").classList.remove("hide");
+        console.error("API returned error:", data.message);
+        document.querySelector(".crystalize").classList.add("hide");
+        return;
       }
       const location = data.name;
       const country = data.sys.country;
       document.querySelector("#locationName").textContent =
         location + ", " + country;
+    })
+    .catch((error) => {
+      console.error("Error fetching location name:", error);
+      document.querySelector(".crystalize").classList.add("hide");
     });
 }
 function getWeather(lat, lon) {
   document.querySelector(".weatherforecast").innerHTML = ""; // Clear previous forecast data
   document.querySelector(".crystalize").classList.remove("hide");
   fetch(
-    `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,alerts&appid=${apiKey}&units=metric`
+    `${config.openWeatherOneCallUrl}?lat=${lat}&lon=${lon}&exclude=hourly,minutely,alerts&appid=${apiKey}&units=metric`
   )
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then((data) => {
-      console.log(data);
-      if (data.cod !== 200) {
-        document.querySelector(".electro-charged").classList.remove("hide");
+      // Weather data received
+      if (data.cod && data.cod !== 200) {
+        console.error("API returned error:", data.message);
+        document.querySelector(".crystalize").classList.add("hide");
+        return;
       }
       const weather = data.current.weather[0].description;
       weatherIcon = data.current.weather[0].icon; // Weather icon code, will convert to actual icons
@@ -192,7 +232,7 @@ function getWeather(lat, lon) {
       const realfeel = Math.round(data.current.feels_like);
       const temphue = Math.min(248, Math.max(187 - temp * 6.375, -79));
       const temphsl = `hsl(${temphue}, 100%, 50%)`;
-      console.log(temphue)
+      // Temperature hue calculated for styling
       document.querySelector(".electro-charged").classList.remove("hide");
 
       document.querySelector("#condition").innerHTML = weather;
@@ -217,13 +257,20 @@ function getExtra(lat, lon) {
   document.querySelector(".weatherforecast").innerHTML = ""; // Clear previous forecast data
   document.querySelector(".crystalize").classList.remove("hide");
   fetch(
-    `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,alerts&appid=${apiKey}&units=metric`
+    `${config.openWeatherOneCallUrl}?lat=${lat}&lon=${lon}&exclude=hourly,minutely,alerts&appid=${apiKey}&units=metric`
   )
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then((data) => {
-      console.log(data);
-      if (data.cod !== 200) {
-        document.querySelector(".electro-charged").classList.remove("hide");
+      // Extra weather data received
+      if (data.cod && data.cod !== 200) {
+        console.error("API returned error:", data.message);
+        document.querySelector(".crystalize").classList.add("hide");
+        return;
       }
       const humidity = Math.round(data.current.humidity);
       const wind = Math.round(data.current.wind_speed);
@@ -272,13 +319,20 @@ function getForecast(lat, lon) {
   document.querySelector(".weatherforecast").innerHTML = ""; // Clear previous forecast data
   document.querySelector(".crystalize").classList.remove("hide");
   fetch(
-    `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,alerts&appid=${apiKey}&units=metric`
+    `${config.openWeatherOneCallUrl}?lat=${lat}&lon=${lon}&exclude=hourly,minutely,alerts&appid=${apiKey}&units=metric`
   )
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then((data) => {
-      console.log(data);
-      if (data.cod !== 200) {
-        document.querySelector(".electro-charged").classList.remove("hide");
+      // Forecast data received
+      if (data.cod && data.cod !== 200) {
+        console.error("API returned error:", data.message);
+        document.querySelector(".crystalize").classList.add("hide");
+        return;
       }
       data.daily.slice(0, 3).forEach((daily) => {
         const weather = daily.weather[0].description;
@@ -309,7 +363,7 @@ function getForecast(lat, lon) {
           if (dateOfWeek === "Saturday") return "white";
           if (dateOfWeek === "Sunday") return "red";
         })();
-        console.log();
+        // Day color calculated for styling
 
         // Append forecast details
         document.querySelector(".weatherforecast").innerHTML += `
@@ -351,7 +405,7 @@ function getHourlyWeather(lat, lon) {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // Hourly weather data received
       if (data.cod !== 200) {
         document.querySelector(".electro-charged").classList.remove("hide");
       }
@@ -435,7 +489,7 @@ function getRealTimeWeather(lat, lon) {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // Real-time weather data received
       if (data.cod !== 200) {
         document.querySelector(".electro-charged").classList.remove("hide");
       }
@@ -454,7 +508,7 @@ function getRealTimeWeather(lat, lon) {
         const timeUntilDry = data.minutely.findIndex(
           (minute) => minute.precipitation === 0
         );
-        console.log(timeUntilDry,timeUntilRain,allRain);
+        // Precipitation timing calculated
         // const timeUntilDryInMinutes = timeUntilDry !== -1 ? data.minutely[timeUntilDry].dt - data.minutely[0].dt : -1;
         if (timeUntilRain === -1) {
           document.querySelector(
@@ -568,10 +622,18 @@ function loadData() {
     lat = parseFloat(savedLat); // Ensure lat and lon are numbers
     lon = parseFloat(savedLon);
   } else {
-    lat = 35.021041;
-    lon = 135.7556075;
+    // Use default coordinates from config
+    lat = config.defaultLat;
+    lon = config.defaultLon;
     reloadButton.classList.add("hide");
     clearButton.classList.add("hide");
+  }
+
+  // Validate coordinates
+  if (isNaN(lat) || isNaN(lon)) {
+    console.error("Invalid coordinates:", lat, lon);
+    lat = config.defaultLat;
+    lon = config.defaultLon;
   }
 
   getLocationName(lat, lon);
